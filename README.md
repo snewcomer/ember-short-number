@@ -1,7 +1,12 @@
 ember-short-number
 ==============================================================================
 
-[Short description of the addon.]
+Short number formatting based on cldr locale data
+
+`1234` is converted to `1K` in English
+`1234` is converted to `1 mil` in Espanol
+
+Based on [cldr-numbers-full](https://github.com/unicode-cldr/cldr-numbers-full)
 
 Installation
 ------------------------------------------------------------------------------
