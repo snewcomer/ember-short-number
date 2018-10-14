@@ -9,10 +9,12 @@ module.exports = {
   treeForApp(tree) {
     let trees = [tree];
 
-    if (tree && this.locales.length) {
+    if (tree) { //&& this.locales.length) {
       let cldrTree = extract(tree, {
+        // locales: this.locales,
+        relativeFields: true,
         numberFields: true,
-        destDir: 'cldrs-short',
+        destDir: 'cldrs',
         prelude: '/*jslint eqeq: true*/\n',
         moduleType: 'es6'
       });
