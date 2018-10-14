@@ -5,8 +5,21 @@ Short number formatting based on cldr locale data
 
 `1234` is converted to `1K` in English
 `1234` is converted to `1 mil` in Espanol
+`1234` is converted to `1 mil` in Espanol
 
 Based on [cldr-numbers-full](https://github.com/unicode-cldr/cldr-numbers-full)
+
+Currently this only shortens with latin digits 0..9
+
+Known number systems includes
+
+[:adlm, :ahom, :arab, :arabext, :armn, :armnlow, :bali, :beng, :bhks, :brah,
+ :cakm, :cham, :cyrl, :deva, :ethi, :fullwide, :geor, :grek, :greklow, :gujr,
+ :guru, :hanidays, :hanidec, :hans, :hansfin, :hant, :hantfin, :hebr, :hmng,
+ :java, :jpan, :jpanfin, :kali, :khmr, :knda, :lana, :lanatham, :laoo, :latn,
+ :lepc, :limb, :mathbold, :mathdbl, :mathmono, :mathsanb, :mathsans, :mlym,
+ :modi, :mong, :mroo, ...]
+
 
 Installation
 ------------------------------------------------------------------------------

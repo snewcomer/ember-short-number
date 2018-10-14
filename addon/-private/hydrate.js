@@ -16,7 +16,7 @@ export function lookupByFactoryType(type, modulePrefix) {
  */
 export default function(service, owner) {
   const config = owner.resolveRegistration('config:environment');
-  const cldrs = lookupByFactoryType('cldrs', config.modulePrefix);
+  const cldrs = lookupByFactoryType('cldrs-shorts', config.modulePrefix);
 
   if (!cldrs.length) {
     warn(
@@ -29,6 +29,6 @@ export default function(service, owner) {
   }
 
   cldrs
-    .map(moduleName => owner.resolveRegistration(`cldr:${moduleName.split('/').pop()}`))
+    .map(moduleName => owner.resolveRegistration(`cldrs-short:${moduleName.split('/').pop()}`))
     .forEach(data => data.forEach(service.addLocaleData.bind(service)));
 }
