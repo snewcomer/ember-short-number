@@ -86,7 +86,7 @@ export default Service.extend({
         let [testRangeHigh] = rules[i];
         // always use previous rule until within 5% threshold of upper limit
         // @TODO threshold configurable
-        if (!this.alwaysUseUpperLimit - (number  / testRangeHigh) > this.threshold) {
+        if (!this.alwaysUseUpperLimit && (1 - (number / testRangeHigh) > this.threshold)) {
           // e.g use 950K instead of 1M
           // e.g use 101K instead of 0.1M
           matchingRule = rules[i - 1];
