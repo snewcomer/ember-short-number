@@ -6,6 +6,25 @@ import toLocaleFixed from '../-private/to-locale-fixed';
 export default Service.extend({
   __localeData__: null,
 
+  /**
+   * Percentage from upper limit to consider using upper limit rules
+   * e.g. 950,000 is within 95% of upper limit of 1,000,000.  Thus use 1M abbreviation
+   * rules
+   *
+   * @property threshold
+   * @default 0.05
+   */
+  threshold: 0.05,
+
+  /**
+   * Assumes, for a number 101,000, you want to show 101K
+   * Set to true on service if you want to show 0.1M
+   *
+   * @property alwaysUseUpperLimit
+   * @default false
+   */
+  alwaysUseUpperLimit: false,
+
   init() {
     this._super(...arguments);
 
@@ -22,12 +41,22 @@ export default Service.extend({
   },
 
   /**
+   * digitsConfig accepts 3 possiblearguments
+   *  - significantDigits
+   *  - minimumFractionDigits
+   *  - maximumFractionDigits
+   *
    * @method formatNumber
    * @param {String|Number} value
-   * @param {String} locale
-   * @return {Number}
+   * @param {String} [locale='en'] this is the language code as specified by ISO 639-1
+   * @param {Object} digitsConfig
+   * @return {String}
    */
-  formatNumber(value, locale, significantDigits = 0) {
+  formatNumber(value, locale = 'en', digitsConfig = {}) {
+    if (!value) {
+      return value;
+    }
+
     // coerce to number
     let number = Number(value);
 
@@ -37,14 +66,9 @@ export default Service.extend({
     }
 
     number = Math.abs(number);
-
-    if (number < 1000) {
-      return value;
-    }
-
     let rules = this.__localeData__[locale] ? this.__localeData__[locale].numbers.decimal.short : null;
 
-    if (!rules) {
+    if (!rules || number < 1000) {
       return value;
     }
 
@@ -60,8 +84,11 @@ export default Service.extend({
       if (isLessThanBoundary(number, rules[i][0])) {
 
         let [testRangeHigh] = rules[i];
-        if ((testRangeHigh / number) - 1 > 0.05) {
+        // always use previous rule until within 5% threshold of upper limit
+        // @TODO threshold configurable
+        if (!this.alwaysUseUpperLimit - (number  / testRangeHigh) > this.threshold) {
           // e.g use 950K instead of 1M
+          // e.g use 101K instead of 0.1M
           matchingRule = rules[i - 1];
         } else {
           matchingRule = rules[i];
@@ -77,7 +104,7 @@ export default Service.extend({
     let [range, opts] = matchingRule;
     // cldr data is either `one` or `other`
     let [format, numberOfDigits] = opts.one || opts.other;
-    let normalized = normalizeNumber(extractIntPart(number, range, numberOfDigits), range, numberOfDigits, sign, locale, significantDigits);
+    let normalized = normalizeNumber(extractIntPart(number, range, numberOfDigits), range, numberOfDigits, sign, locale, digitsConfig);
 
     return replaceNumber(normalized, format);
   }
@@ -90,6 +117,10 @@ function isLessThanBoundary(number, boundary) {
   return false;
 }
 
+/**
+ * @method extractIntPart
+ * @return {Decimal}
+ */
 function extractIntPart(number, range, numberOfDigits) {
   // 1734 -> 1.734
   // 17345 -> 17.345
@@ -98,10 +129,23 @@ function extractIntPart(number, range, numberOfDigits) {
   return number / (range / Math.pow(10, numberOfDigits - 1));
 }
 
-function normalizeNumber(decimal, range, numberOfDigits, sign, locale, significantDigits) {
+/**
+ * Meant to either localize a number with a Decimal or return an Integer
+ * localization accepts 3 arguments
+ *  - significantDigits
+ *  - minimumFractionDigits
+ *  - maximumFractionDigits
+ *
+ * @method normalizeNumber
+ * @return {String|Integer}
+ */
+function normalizeNumber(decimal, range, numberOfDigits, sign, locale, { significantDigits = 0, minimumFractionDigits = 0, maximumFractionDigits = 2 }) {
   if (significantDigits) {
-    return toLocaleFixed(toFixed(decimal, significantDigits));
+    // String
+    return toLocaleFixed(toFixed(decimal, significantDigits), locale, { minimumFractionDigits, maximumFractionDigits });
   }
+
+  // Integer
   return Math.round(decimal) * sign;
 }
 

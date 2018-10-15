@@ -28,6 +28,18 @@ module('Unit | Service | short-number', function(hooks) {
     assert.equal(formattedNumber, '1K');
   });
 
+  test('it defaults locale to en', function(assert) {
+    let service = this.owner.lookup('service:short-number');
+    let formattedNumber = service.formatNumber(1234);
+    assert.equal(formattedNumber, '1K');
+  });
+
+  test('it doesnt format if no value', function(assert) {
+    let service = this.owner.lookup('service:short-number');
+    let formattedNumber = service.formatNumber(null);
+    assert.equal(formattedNumber, null);
+  });
+
   test('it accepts a string', function(assert) {
     let service = this.owner.lookup('service:short-number');
     let formattedNumber = service.formatNumber('1234', 'en');

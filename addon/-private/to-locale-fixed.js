@@ -1,5 +1,5 @@
-export default function(value, locale) {
+export default function(value, locale, digitsConfig) {
   if (value && typeof(value) === 'number') {
-    return value.toLocaleString(locale);
+    return value.toLocaleString(locale, digitsConfig);
   }
 }

@@ -5,8 +5,8 @@ import { get } from '@ember/object';
 export default Helper.extend({
   shortNumber: inject(),
 
-  compute([number, lang], { significantDigits }) {
-    return get(this, 'shortNumber').formatNumber(number, lang, significantDigits);
+  compute([number, lang], digitsConfig) {
+    return get(this, 'shortNumber').formatNumber(number, lang, digitsConfig);
   }
 });
 

@@ -3,22 +3,23 @@ ember-short-number
 
 Short number formatting based on cldr locale data
 
-`1234` is converted to `1K` in English
-`1234` is converted to `1 mil` in Espanol
-`1234` is converted to `1 mil` in Espanol
+- `1234` is converted to `1K` in English
+- `101234` is converted to `101K` in English and `101.1K` if need 1 significant digit
+- `1234` is converted to `1 mil` in Espanol
+- `101234` is converted to `101,1K` in Espanol if need 1 significant digit
 
 Based on [cldr-numbers-full](https://github.com/unicode-cldr/cldr-numbers-full)
 
 Currently this only shortens with latin digits 0..9
 
-For your information, Known number systems includes
+For your information, known number systems include:
 
-[:adlm, :ahom, :arab, :arabext, :armn, :armnlow, :bali, :beng, :bhks, :brah,
- :cakm, :cham, :cyrl, :deva, :ethi, :fullwide, :geor, :grek, :greklow, :gujr,
- :guru, :hanidays, :hanidec, :hans, :hansfin, :hant, :hantfin, :hebr, :hmng,
- :java, :jpan, :jpanfin, :kali, :khmr, :knda, :lana, :lanatham, :laoo, :latn,
- :lepc, :limb, :mathbold, :mathdbl, :mathmono, :mathsanb, :mathsans, :mlym,
- :modi, :mong, :mroo, ...]
+[adlm, ahom, arab, arabext, armn, armnlow, bali, beng, bhks, brah,
+ cakm, cham, cyrl, deva, ethi, fullwide, geor, grek, greklow, gujr,
+ guru, hanidays, hanidec, hans, hansfin, hant, hantfin, hebr, hmng,
+ java, jpan, jpanfin, kali, khmr, knda, lana, lanatham, laoo, latn,
+ lepc, limb, mathbold, mathdbl, mathmono, mathsanb, mathsans, mlym,
+ modi, mong, mroo, ...]
 
 
 Installation
@@ -31,6 +32,7 @@ ember install ember-short-number
 
 Usage
 ------------------------------------------------------------------------------
+Note - the following APIs take the language code as the the second argument based on [ISO 639-1](http://www.loc.gov/standards/iso639-2/php/code_list.php)
 
 **Template Helper**
 
@@ -49,9 +51,11 @@ this.shortNumber.formatNumber(19634, 'en');
 ```
 
 ```js
-this.shortNumber.formatNumber(19634, 'en', 1);
+this.shortNumber.formatNumber(19634, 'en', { significantDigits: 1, minimumFractionDigits: 1, maximumFractionDigits: 2 });
 // 19.6K
 ```
+
+* Note when using significantDigits, this addon utilizes [`toLocaleString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) and returns type of String.
 
 Contributing
 ------------------------------------------------------------------------------

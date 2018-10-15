@@ -193,11 +193,11 @@ module('Integration | Helper | short-number', function(hooks) {
 
     await render(hbs`{{short-number 949949 "es" significantDigits=1}}`);
 
-    assert.equal(replaceWhitespace(this.element.textContent.trim()), '949.9 mil', 'greater than 5% threshold and does not round up');
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '949,9 mil', 'greater than 5% threshold and does not round up');
 
     await render(hbs`{{short-number 949949 "es" significantDigits=2}}`);
 
-    assert.equal(replaceWhitespace(this.element.textContent.trim()), '949.95 mil', 'greater than 5% threshold and does not round up');
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '949,95 mil', 'greater than 5% threshold and does not round up');
 
     await render(hbs`{{short-number 949999 "es" significantDigits=1}}`);
 
@@ -266,6 +266,28 @@ module('Integration | Helper | short-number', function(hooks) {
     await render(hbs`{{short-number "-19234" "fr"}}`);
 
     assert.equal(this.element.textContent.trim().replace(/\s+/, ' '), '-19 k');
+  });
+
+  test('it renders "ja"', async function(assert) {
+    await render(hbs`{{short-number 234 "ja"}}`);
+
+    assert.equal(this.element.textContent.trim(), '234');
+
+    await render(hbs`{{short-number 1234 "ja"}}`);
+
+    assert.equal(this.element.textContent.trim(), '1');
+
+    await render(hbs`{{short-number 11634 "ja" significantDigits=1}}`);
+
+    assert.equal(this.element.textContent.trim(), '1.2万');
+
+    await render(hbs`{{short-number 19234 "ja"}}`);
+
+    assert.equal(this.element.textContent.trim(), '2万');
+
+    await render(hbs`{{short-number 11119234 "ja"}}`);
+
+    assert.equal(this.element.textContent.trim(), '1112万');
   });
 
   // test('it renders "ne"', async function(assert) {
