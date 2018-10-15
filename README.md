@@ -11,7 +11,7 @@ Based on [cldr-numbers-full](https://github.com/unicode-cldr/cldr-numbers-full)
 
 Currently this only shortens with latin digits 0..9
 
-Known number systems includes
+For your information, Known number systems includes
 
 [:adlm, :ahom, :arab, :arabext, :armn, :armnlow, :bali, :beng, :bhks, :brah,
  :cakm, :cham, :cyrl, :deva, :ethi, :fullwide, :geor, :grek, :greklow, :gujr,
@@ -32,21 +32,38 @@ ember install ember-short-number
 Usage
 ------------------------------------------------------------------------------
 
-[Longer description of how to use the addon in apps.]
+**Template Helper**
 
+```hbs
+{{short-number 19634 "en"}}
+```
+
+```hbs
+{{short-number 19634 "en" significantDigits=1}}
+```
+
+**Service API**
+```js
+this.shortNumber.formatNumber(19634, 'en');
+// 19K
+```
+
+```js
+this.shortNumber.formatNumber(19634, 'en', 1);
+// 19.6K
+```
 
 Contributing
 ------------------------------------------------------------------------------
 
 ### Installation
 
-* `git clone <repository-url>`
+* `git clone git@github.com:snewcomer/ember-short-number.git`
 * `cd ember-short-number`
 * `npm install`
 
 ### Linting
 
-* `npm run lint:hbs`
 * `npm run lint:js`
 * `npm run lint:js -- --fix`
 
