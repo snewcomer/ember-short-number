@@ -29,6 +29,19 @@ Installation
 ember install ember-short-number
 ```
 
+Configuration
+------------------------------------------------------------------------------
+Provide list of language codes applicable to your app in your `environment.js` file.  See [ISO 639-1](http://www.loc.gov/standards/iso639-2/php/code_list.php) for more information.
+
+If not provided, we will include the data for all CLDR number formatting options in your app.  IMPORTANT - this adds ~28KB gzipped to your app so be sure to include all the languages you care about.
+
+```js
+let ENV = {
+  'ember-short-number': {
+    locales: ['en', 'es']
+  }
+}
+```
 
 Usage
 ------------------------------------------------------------------------------
