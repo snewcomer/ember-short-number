@@ -99,7 +99,7 @@ export default Service.extend({
           matchingRule = rules[i - 1];
         } else {
           matchingRule = rules[i];
-          if (!digitsConfig.significantDigits) {
+          if (!digitsConfig.significantDigits || !useShorterFormat) {
             // if we want to round up, we need to prevent numbers like 99,499 from rounding down to 99K
             arbitraryPrecision = 1;
           }
@@ -159,7 +159,14 @@ function extractIntPart(number, range, numberOfDigits) {
  * @method normalizeNumber
  * @return {String|Integer}
  */
-function normalizeNumber(decimal, range, numberOfDigits, arbitraryPrecision, sign, locale, { significantDigits = 0, minimumFractionDigits = 0, maximumFractionDigits = 2 }) {
+function normalizeNumber(
+  decimal,
+  range,
+  numberOfDigits,
+  arbitraryPrecision,
+  sign,
+  locale,
+  { significantDigits = 0, minimumFractionDigits = 0, maximumFractionDigits = 2 }) {
   if (significantDigits) {
     // String
     return toLocaleFixed(toFixed(decimal, significantDigits), locale, { minimumFractionDigits, maximumFractionDigits });
