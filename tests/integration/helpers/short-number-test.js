@@ -36,9 +36,17 @@ module('Integration | Helper | short-number', function(hooks) {
 
     assert.equal(this.element.textContent.trim(), '19K');
 
+    await render(hbs`{{short-number 94999 "en"}}`);
+
+    assert.equal(this.element.textContent.trim(), '95K', 'greater than 5% threshold so still use 10K rules');
+
+    await render(hbs`{{short-number 95000 "en"}}`);
+
+    assert.equal(this.element.textContent.trim(), '95K', 'greater than 5% threshold so still use 10K rules');
+
     await render(hbs`{{short-number 99499 "en"}}`);
 
-    assert.equal(this.element.textContent.trim(), '99K', 'greater than 5% threshold so still use 10K rules');
+    assert.equal(this.element.textContent.trim(), '100K', 'greater than 5% threshold so still use 10K rules');
 
     await render(hbs`{{short-number 99500 "en"}}`);
 
