@@ -173,7 +173,7 @@ function normalizeNumber(
   }
 
   // Integer
-  return Math.round(toFixed(decimal, arbitraryPrecision)) * sign;
+  return withRounding(decimal, arbitraryPrecision) * sign;
 }
 
 function toFixed(decimal, significantDigits) {
@@ -181,6 +181,17 @@ function toFixed(decimal, significantDigits) {
   // e.g. 999.94 -> 999.9
   // e.g. 999.95 -> 1000 instead of (999.95).toFixed(1) -> '1000.1'
   return Math.round(decimal * Math.pow(10, significantDigits)) / Math.pow(10, significantDigits);
+}
+
+function withRounding(decimal, arbitraryPrecision) {
+  // rounding on floating point numbers
+  // e.g. 99.5 -> 100
+  if (decimal > 1) {
+    return Math.round(decimal / Math.pow(10, arbitraryPrecision)) * Math.pow(10, arbitraryPrecision);
+  } else {
+    // We do not want to round when < 1
+    return Math.round(decimal);
+  }
 }
 
 function replaceNumber(number, format) {

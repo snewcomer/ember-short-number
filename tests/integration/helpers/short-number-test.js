@@ -11,7 +11,7 @@ function replaceWhitespace(val) {
 module('Integration | Helper | short-number', function(hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders "en"', async function(assert) {
+  test('it renders "en" <= 10,000', async function(assert) {
     await render(hbs`{{short-number 234 "en"}}`);
 
     assert.equal(this.element.textContent.trim(), '234');
@@ -31,7 +31,9 @@ module('Integration | Helper | short-number', function(hooks) {
     await render(hbs`{{short-number 9500 "en"}}`);
 
     assert.equal(this.element.textContent.trim(), '10K', 'within 5% threshold so use 10K rules');
+  });
 
+  test('it renders "en" <= 100,000', async function(assert) {
     await render(hbs`{{short-number 19234 "en"}}`);
 
     assert.equal(this.element.textContent.trim(), '19K');
@@ -42,7 +44,7 @@ module('Integration | Helper | short-number', function(hooks) {
 
     await render(hbs`{{short-number 95001 "en"}}`);
 
-    assert.equal(this.element.textContent.trim(), '95K', 'greater than 5% threshold so still use 10K rules');
+    assert.equal(this.element.textContent.trim(), '100K', 'greater than 5% threshold so still use 10K rules');
 
     await render(hbs`{{short-number 99499 "en"}}`);
 
@@ -59,7 +61,9 @@ module('Integration | Helper | short-number', function(hooks) {
     await render(hbs`{{short-number 100000 "en"}}`);
 
     assert.equal(this.element.textContent.trim(), '100K');
+  });
 
+  test('it renders "en" <= 1,000,000', async function(assert) {
     await render(hbs`{{short-number 101000 "en"}}`, 'it does not round up to 1M');
 
     assert.equal(this.element.textContent.trim(), '101K');
