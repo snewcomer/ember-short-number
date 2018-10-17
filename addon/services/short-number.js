@@ -1,10 +1,12 @@
 import Service from '@ember/service';
 import { getOwner } from '@ember/application';
+import { set } from '@ember/object';
 import hydrate from '../-private/hydrate';
 import toLocaleFixed from '../-private/to-locale-fixed';
 
 export default Service.extend({
   __localeData__: null,
+  __config__: null,
 
   /**
    * Percentage from upper limit to consider using upper limit rules
@@ -16,17 +18,18 @@ export default Service.extend({
    */
   threshold: 0.05,
 
-  /**
-   * Assumes, for a number 101,000, you want to show 101K
-   * Set to true on service if you want to show 0.1M
-   *
-   * @property alwaysUseUpperLimit
-   * @default false
-   */
-  alwaysUseUpperLimit: false,
-
   init() {
     this._super(...arguments);
+
+    let userConfig = getOwner(this).resolveRegistration('config:environment');
+    let addonConfig = userConfig['ember-short-number'];
+
+    if (addonConfig) {
+      set(this, '__config__', addonConfig);
+      if (addonConfig['threshold']) {
+        set(this, 'threshold', addonConfig['threshold']);
+      }
+    }
 
     this.__localeData__ = {};
     hydrate(this, getOwner(this));
@@ -45,6 +48,13 @@ export default Service.extend({
    *  - significantDigits
    *  - minimumFractionDigits
    *  - maximumFractionDigits
+   *
+   * extracts one rule for a given language:
+   * e.g.
+   *  rule = [
+   *    [1000, {one: ["0K", 1], other: ["0K", 1]}],
+   *    [10000, {one: ["00K", 2], other: ["00K", 2]}]
+   *  ]
    *
    * @method formatNumber
    * @param {String|Number} value
@@ -72,26 +82,27 @@ export default Service.extend({
       return value;
     }
 
-    // rules = [
-    //   [1000, {one: ["0K", 1], other: ["0K", 1]}],
-    //   [10000, {one: ["00K", 2], other: ["00K", 2]}]
-    // ]
-
-    // 1. Take value and determine range it is in - e.g. 1000 for 1765
-    // 2. Extract specific rule from hash - ["0K", 1] meaning which value from the rule and number of zeros
+    let { useShorterFormat = false } = digitsConfig;
     let matchingRule;
+    let arbitraryPrecision = 0;
+
+    // 1. Take value and determine range it is in
+    // 2. Extract specific rule from hash - ["0K", 1] meaning which value from the rule and number of zeros
     for (let i = 0; i <= rules.length; i++) {
       if (isLessThanBoundary(number, rules[i][0])) {
 
         let [testRangeHigh] = rules[i];
         // always use previous rule until within 5% threshold of upper limit
-        // @TODO threshold configurable
-        if (!this.alwaysUseUpperLimit && (1 - (number / testRangeHigh) > this.threshold)) {
+        if (!useShorterFormat && (1 - (number / testRangeHigh) > this.threshold)) {
           // e.g use 950K instead of 1M
           // e.g use 101K instead of 0.1M
           matchingRule = rules[i - 1];
         } else {
           matchingRule = rules[i];
+          if (!digitsConfig.significantDigits || !useShorterFormat) {
+            // if we want to round up, we need to prevent numbers like 99,499 from rounding down to 99K
+            arbitraryPrecision = 1;
+          }
         }
         break;
       }
@@ -102,9 +113,18 @@ export default Service.extend({
     //  1600 -> 1.600 -> 2K
     // 4. Format according to formatter e.g. "0K"
     let [range, opts] = matchingRule;
-    // cldr data is either `one` or `other`
+    // cldr data is either `one` or `other`.  Defaulting to `one` for now
     let [format, numberOfDigits] = opts.one || opts.other;
-    let normalized = normalizeNumber(extractIntPart(number, range, numberOfDigits), range, numberOfDigits, sign, locale, digitsConfig);
+
+    let normalized = normalizeNumber(
+      extractIntPart(number, range, numberOfDigits),
+      range,
+      numberOfDigits,
+      arbitraryPrecision,
+      sign,
+      locale,
+      digitsConfig
+  );
 
     return replaceNumber(normalized, format);
   }
@@ -139,14 +159,21 @@ function extractIntPart(number, range, numberOfDigits) {
  * @method normalizeNumber
  * @return {String|Integer}
  */
-function normalizeNumber(decimal, range, numberOfDigits, sign, locale, { significantDigits = 0, minimumFractionDigits = 0, maximumFractionDigits = 2 }) {
+function normalizeNumber(
+  decimal,
+  range,
+  numberOfDigits,
+  arbitraryPrecision,
+  sign,
+  locale,
+  { significantDigits = 0, minimumFractionDigits = 0, maximumFractionDigits = 2 }) {
   if (significantDigits) {
     // String
     return toLocaleFixed(toFixed(decimal, significantDigits), locale, { minimumFractionDigits, maximumFractionDigits });
   }
 
   // Integer
-  return Math.round(decimal) * sign;
+  return Math.round(toFixed(decimal, arbitraryPrecision)) * sign;
 }
 
 function toFixed(decimal, significantDigits) {

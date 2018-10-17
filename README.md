@@ -38,7 +38,8 @@ If not provided, we will include the data for all CLDR number formatting options
 ```js
 let ENV = {
   'ember-short-number': {
-    locales: ['en', 'es']
+    locales: ['en', 'es'],
+    threshold: 0.5 // default
   }
 }
 ```
@@ -57,7 +58,11 @@ Note - the following APIs take the language code as the the second argument base
 {{short-number 19634 "en" significantDigits=1}}
 ```
 
-**Service API**
+```hbs
+{{short-number 101K "en" significantDigits=1 useShorterFormat=true}}
+```
+
+Alternatively use the **Service API**
 ```js
 this.shortNumber.formatNumber(19634, 'en');
 // 19K
@@ -66,6 +71,11 @@ this.shortNumber.formatNumber(19634, 'en');
 ```js
 this.shortNumber.formatNumber(19634, 'en', { significantDigits: 1, minimumFractionDigits: 1, maximumFractionDigits: 2 });
 // 19.6K
+```
+
+```js
+this.shortNumber.formatNumber(101K, 'en', { significantDigits: 1, useShorterFormat: true });
+// 0.1M
 ```
 
 * Note when using significantDigits, this addon utilizes [`toLocaleString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) and returns type of String.
