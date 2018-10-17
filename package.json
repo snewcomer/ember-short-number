@@ -23,7 +23,7 @@
     "test:all": "ember try:each"
   },
   "dependencies": {
-    "broccoli-cldr-data": "git+ssh://git@github.com:ember-intl/broccoli-cldr-data#master",
+    "broccoli-cldr-data": "ember-intl/broccoli-cldr-data",
     "ember-cli-babel": "^6.16.0"
   },
   "devDependencies": {
