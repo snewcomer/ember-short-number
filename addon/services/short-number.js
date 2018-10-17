@@ -1,10 +1,12 @@
 import Service from '@ember/service';
 import { getOwner } from '@ember/application';
+import { set } from '@ember/object';
 import hydrate from '../-private/hydrate';
 import toLocaleFixed from '../-private/to-locale-fixed';
 
 export default Service.extend({
   __localeData__: null,
+  __config__: null,
 
   /**
    * Percentage from upper limit to consider using upper limit rules
@@ -16,17 +18,18 @@ export default Service.extend({
    */
   threshold: 0.05,
 
-  /**
-   * Assumes, for a number 101,000, you want to show 101K
-   * Set to true on service if you want to show 0.1M
-   *
-   * @property alwaysUseUpperLimit
-   * @default false
-   */
-  alwaysUseUpperLimit: false,
-
   init() {
     this._super(...arguments);
+
+    let userConfig = getOwner(this).resolveRegistration('config:environment');
+    let addonConfig = userConfig['ember-short-number'];
+
+    if (addonConfig) {
+      set(this, '__config__', addonConfig);
+      if (addonConfig['threshold']) {
+        set(this, 'threshold', addonConfig['threshold']);
+      }
+    }
 
     this.__localeData__ = {};
     hydrate(this, getOwner(this));
@@ -80,13 +83,15 @@ export default Service.extend({
     // 1. Take value and determine range it is in - e.g. 1000 for 1765
     // 2. Extract specific rule from hash - ["0K", 1] meaning which value from the rule and number of zeros
     let matchingRule;
+    let { useShorterFormat = false } = digitsConfig;
+
     for (let i = 0; i <= rules.length; i++) {
       if (isLessThanBoundary(number, rules[i][0])) {
 
         let [testRangeHigh] = rules[i];
         // always use previous rule until within 5% threshold of upper limit
         // @TODO threshold configurable
-        if (!this.alwaysUseUpperLimit && (1 - (number / testRangeHigh) > this.threshold)) {
+        if (!useShorterFormat && (1 - (number / testRangeHigh) > this.threshold)) {
           // e.g use 950K instead of 1M
           // e.g use 101K instead of 0.1M
           matchingRule = rules[i - 1];

@@ -3,6 +3,7 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
+// due to regex replacement
 function replaceWhitespace(val) {
   return val.replace(/\s+/, ' ')
 }
@@ -25,11 +26,11 @@ module('Integration | Helper | short-number', function(hooks) {
 
     await render(hbs`{{short-number 9499 "en"}}`);
 
-    assert.equal(this.element.textContent.trim(), '9K', 'greater than 5% threshold');
+    assert.equal(this.element.textContent.trim(), '9K', 'greater than 5% threshold so still use 1K rules');
 
     await render(hbs`{{short-number 9500 "en"}}`);
 
-    assert.equal(this.element.textContent.trim(), '10K', 'less than 5% threshold');
+    assert.equal(this.element.textContent.trim(), '10K', 'within 5% threshold so use 10K rules');
 
     await render(hbs`{{short-number 19234 "en"}}`);
 
@@ -37,11 +38,11 @@ module('Integration | Helper | short-number', function(hooks) {
 
     await render(hbs`{{short-number 99499 "en"}}`);
 
-    assert.equal(this.element.textContent.trim(), '99K', 'greater than 5% threshold');
+    assert.equal(this.element.textContent.trim(), '99K', 'greater than 5% threshold so still use 10K rules');
 
     await render(hbs`{{short-number 99500 "en"}}`);
 
-    assert.equal(this.element.textContent.trim(), '100K', 'less than 5% threshold');
+    assert.equal(this.element.textContent.trim(), '100K', 'within than 5% threshold so still use 100K rules');
 
     await render(hbs`{{short-number 99999 "en"}}`);
 
@@ -55,9 +56,13 @@ module('Integration | Helper | short-number', function(hooks) {
 
     assert.equal(this.element.textContent.trim(), '101K');
 
-    await render(hbs`{{short-number 500000 "en"}}`, 'it does not round up to 1M');
+    await render(hbs`{{short-number 101000 "en" significantDigits=1 useShorterFormat=true}}`);
 
-    assert.equal(this.element.textContent.trim(), '500K');
+    assert.equal(this.element.textContent.trim(), '0.1M', 'uses shorter format to display');
+
+    await render(hbs`{{short-number 500000 "en"}}`);
+
+    assert.equal(this.element.textContent.trim(), '500K', 'it does not round up to 1M');
 
     await render(hbs`{{short-number 600000 "en"}}`, 'it does not round up to 1M');
 
@@ -69,15 +74,11 @@ module('Integration | Helper | short-number', function(hooks) {
 
     await render(hbs`{{short-number 995000 "en"}}`);
 
-    assert.equal(this.element.textContent.trim(), '1M', 'less than 5% threshold');
+    assert.equal(this.element.textContent.trim(), '1M', 'within 5% threshold so use 1M rules');
 
     await render(hbs`{{short-number 999949 "en"}}`);
 
-    assert.equal(this.element.textContent.trim(), '1M', '999949 works');
-
-    await render(hbs`{{short-number 999950 "en"}}`);
-
-    assert.equal(this.element.textContent.trim(), '1M', '999950 works');
+    assert.equal(this.element.textContent.trim(), '1M', 'within 5% threshold so use 1M rules');
 
     await render(hbs`{{short-number 11119234 "en"}}`);
 
@@ -85,7 +86,7 @@ module('Integration | Helper | short-number', function(hooks) {
 
     await render(hbs`{{short-number "-19234" "en"}}`);
 
-    assert.equal(this.element.textContent.trim(), '-19K');
+    assert.equal(this.element.textContent.trim(), '-19K', 'handles negative numbers such as -19234');
 
     await render(hbs`{{short-number "-19234.9" "en"}}`);
 
@@ -103,19 +104,23 @@ module('Integration | Helper | short-number', function(hooks) {
 
     await render(hbs`{{short-number 99500 "en" significantDigits=1}}`);
 
-    assert.equal(this.element.textContent.trim(), '99.5K', 'less than 5% threshold but still round');
+    assert.equal(this.element.textContent.trim(), '99.5K', 'within 5% threshold but still round');
 
     await render(hbs`{{short-number 99949 "en" significantDigits=1}}`);
 
-    assert.equal(this.element.textContent.trim(), '99.9K', 'less than 5% threshold but still round');
+    assert.equal(this.element.textContent.trim(), '99.9K', 'within 5% threshold but still round');
 
     await render(hbs`{{short-number 99950 "en" significantDigits=1}}`);
 
-    assert.equal(this.element.textContent.trim(), '100K', 'less than 5% threshold but should round');
+    assert.equal(this.element.textContent.trim(), '100K', 'within 5% threshold but should round');
 
     await render(hbs`{{short-number 101000 "en" significantDigits=1}}`);
 
     assert.equal(this.element.textContent.trim(), '101K');
+
+    await render(hbs`{{short-number 101000 "en" significantDigits=1 useShorterFormat=true}}`);
+
+    assert.equal(this.element.textContent.trim(), '0.1M');
 
     await render(hbs`{{short-number 192345 "en" significantDigits=1}}`);
 
@@ -151,23 +156,23 @@ module('Integration | Helper | short-number', function(hooks) {
 
     await render(hbs`{{short-number 995000 "en" significantDigits=1}}`);
 
-    assert.equal(this.element.textContent.trim(), '1M', 'less than 5% threshold');
+    assert.equal(this.element.textContent.trim(), '1M', 'within 5% threshold');
 
     await render(hbs`{{short-number 995100 "en" significantDigits=1}}`);
 
-    assert.equal(this.element.textContent.trim(), '1M', 'less than 5% threshold');
+    assert.equal(this.element.textContent.trim(), '1M', 'within 5% threshold so does not use significant digit');
 
     await render(hbs`{{short-number 999949 "en" significantDigits=1}}`);
 
-    assert.equal(this.element.textContent.trim(), '1M', '999949 works');
+    assert.equal(this.element.textContent.trim(), '1M', 'within 5% threshold so does not use significant digit');
 
     await render(hbs`{{short-number 999950 "en" significantDigits=1}}`);
 
-    assert.equal(this.element.textContent.trim(), '1M', '999950 works');
+    assert.equal(this.element.textContent.trim(), '1M', 'within 5% threshold so does not use significant digit');
 
     await render(hbs`{{short-number 999950 "en" significantDigits=2}}`);
 
-    assert.equal(this.element.textContent.trim(), '1M');
+    assert.equal(this.element.textContent.trim(), '1M', 'within 5% threshold so does not use significant digit');
 
     await render(hbs`{{short-number 1000000 "en" significantDigits=1}}`);
 
@@ -191,6 +196,14 @@ module('Integration | Helper | short-number', function(hooks) {
 
     assert.equal(replaceWhitespace(this.element.textContent.trim()), '19 mil');
 
+    await render(hbs`{{short-number 101000 "es"}}`);
+
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '101 mil');
+
+    await render(hbs`{{short-number 101000 "es" significantDigits=1 useShorterFormat=true}}`);
+
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '0,1 M');
+
     await render(hbs`{{short-number 949949 "es" significantDigits=1}}`);
 
     assert.equal(replaceWhitespace(this.element.textContent.trim()), '949,9 mil', 'greater than 5% threshold and does not round up');
@@ -201,11 +214,11 @@ module('Integration | Helper | short-number', function(hooks) {
 
     await render(hbs`{{short-number 949999 "es" significantDigits=1}}`);
 
-    assert.equal(replaceWhitespace(this.element.textContent.trim()), '950 mil', 'greater than 5% threshold');
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '950 mil', 'greater than 5% threshold so still use 100K rules');
 
     await render(hbs`{{short-number 995000 "es" significantDigits=1}}`);
 
-    assert.equal(replaceWhitespace(this.element.textContent.trim()), '1 M', 'less than 5% threshold');
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '1 M', 'within 5% threshold so no significant digits');
 
     await render(hbs`{{short-number 999949 "es" significantDigits=1}}`);
 
