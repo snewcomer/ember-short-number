@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 module.exports = {
   root: true,
   parserOptions: {
@@ -20,7 +22,6 @@ module.exports = {
     // node files
     {
       files: [
-        '.template-lintrc.js',
         'ember-cli-build.js',
         'index.js',
         'testem.js',
@@ -44,7 +45,7 @@ module.exports = {
       },
       plugins: ['node'],
       rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
-        // add your custom rules and overrides for node files here
+        'node/no-unpublished-require': "off"
       })
     }
   ]
