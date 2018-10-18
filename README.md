@@ -1,7 +1,7 @@
 ember-short-number
 ==============================================================================
 
-Short number formatting based on cldr locale data
+Short number formatting based on cldr locale data.  Particularly useful for statistical data, showing financial numbers in charts, and abbreviating number of ratings.
 
 - `1234` is converted to `1K` in English
 - `101234` is converted to `101K` in English and `101.1K` if need 1 significant digit
@@ -23,6 +23,7 @@ For your information, known number systems include:
  lepc, limb, mathbold, mathdbl, mathmono, mathsanb, mathsans, mlym,
  modi, mong, mroo, ...]
 
+Lastly, this work will be built into [ember-intl](https://github.com/ember-intl/ember-intl) in the near future and will use something like `shortNumber` notation style defined in ICU message syntax.
 
 Installation
 ------------------------------------------------------------------------------
