@@ -188,10 +188,10 @@ function withRounding(decimal, arbitraryPrecision) {
   // e.g. 99.5 -> 100
   if (decimal > 1) {
     return Math.round(decimal / Math.pow(10, arbitraryPrecision)) * Math.pow(10, arbitraryPrecision);
-  } else {
-    // We do not want to round when < 1
-    return Math.round(decimal);
   }
+
+  // We do not want to round when < 1
+  return Math.round(decimal);
 }
 
 function replaceNumber(number, format) {

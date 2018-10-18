@@ -42,10 +42,14 @@ If not provided, we will include the data for all CLDR number formatting options
 let ENV = {
   'ember-short-number': {
     locales: ['en', 'es'],
-    threshold: 0.5 // default
+    threshold: 0.05 // default
   }
 }
 ```
+
+**threshold**
+
+This configuration option decides when to round up the formatted number.  So if you pass 95001, `ember-short-number` will output 100K.  However, if you pass 94999, you will get back 95K.
 
 Usage
 ------------------------------------------------------------------------------
