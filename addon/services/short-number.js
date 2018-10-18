@@ -63,12 +63,12 @@ export default Service.extend({
    * @return {String}
    */
   formatNumber(value, locale = 'en', digitsConfig = {}) {
-    if (!value) {
-      return value;
-    }
-
     // coerce to number
     let number = Number(value);
+
+    if (!value || typeof number !== 'number') {
+      return value;
+    }
 
     let sign = 1;
     if (number < 0) {
@@ -124,7 +124,7 @@ export default Service.extend({
       sign,
       locale,
       digitsConfig
-  );
+    );
 
     return replaceNumber(normalized, format);
   }

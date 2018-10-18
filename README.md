@@ -63,9 +63,15 @@ Note - the following APIs take the language code as the the second argument base
 ```
 
 Alternatively use the **Service API**
+
 ```js
 this.shortNumber.formatNumber(19634, 'en');
 // 19K
+```
+
+```js
+this.shortNumber.formatNumber(19634, 'ja');
+// 2万
 ```
 
 ```js
@@ -74,11 +80,16 @@ this.shortNumber.formatNumber(19634, 'en', { significantDigits: 1, minimumFracti
 ```
 
 ```js
-this.shortNumber.formatNumber(101K, 'en', { significantDigits: 1, useShorterFormat: true });
+this.shortNumber.formatNumber(19634, 'es', { significantDigits: 1 });
+// 19,6K
+```
+
+```js
+this.shortNumber.formatNumber(101, 'en', { significantDigits: 1, useShorterFormat: true });
 // 0.1M
 ```
 
-* Note when using significantDigits, this addon utilizes [`toLocaleString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) and returns type of String.
+* Note when using significantDigits, this addon utilizes [`toLocaleString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString).
 
 Contributing
 ------------------------------------------------------------------------------
