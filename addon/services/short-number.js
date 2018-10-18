@@ -56,13 +56,13 @@ export default Service.extend({
    *    [10000, {one: ["00K", 2], other: ["00K", 2]}]
    *  ]
    *
-   * @method formatNumber
+   * @method format
    * @param {String|Number} value
    * @param {String} [locale='en'] this is the language code as specified by ISO 639-1
    * @param {Object} digitsConfig
    * @return {String}
    */
-  formatNumber(value, locale = 'en', digitsConfig = {}) {
+  format(value, locale = 'en', digitsConfig = {}) {
     // coerce to number
     let number = Number(value);
 

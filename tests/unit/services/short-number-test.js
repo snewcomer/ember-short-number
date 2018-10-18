@@ -18,31 +18,31 @@ module('Unit | Service | short-number', function(hooks) {
 
   test('it does not format number less than 1000', function(assert) {
     let service = this.owner.lookup('service:short-number');
-    let formattedNumber = service.formatNumber(234, 'en');
+    let formattedNumber = service.format(234, 'en');
     assert.equal(formattedNumber, 234);
   });
 
   test('it does format number greater than 1000', function(assert) {
     let service = this.owner.lookup('service:short-number');
-    let formattedNumber = service.formatNumber(1234, 'en');
+    let formattedNumber = service.format(1234, 'en');
     assert.equal(formattedNumber, '1K');
   });
 
   test('it defaults locale to en', function(assert) {
     let service = this.owner.lookup('service:short-number');
-    let formattedNumber = service.formatNumber(1234);
+    let formattedNumber = service.format(1234);
     assert.equal(formattedNumber, '1K');
   });
 
   test('it doesnt format if no value', function(assert) {
     let service = this.owner.lookup('service:short-number');
-    let formattedNumber = service.formatNumber(null);
+    let formattedNumber = service.format(null);
     assert.equal(formattedNumber, null);
   });
 
   test('it accepts a string', function(assert) {
     let service = this.owner.lookup('service:short-number');
-    let formattedNumber = service.formatNumber('1234', 'en');
+    let formattedNumber = service.format('1234', 'en');
     assert.equal(formattedNumber, '1K');
   });
 });

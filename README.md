@@ -10,6 +10,8 @@ Short number formatting based on cldr locale data
 
 Based on [cldr-numbers-full](https://github.com/unicode-cldr/cldr-numbers-full)
 
+Here is the related proposal for [Compact Decimal Format](https://github.com/tc39/ecma402/issues/37).
+
 Currently this only shortens with latin digits 0..9
 
 For your information, known number systems include:
@@ -65,27 +67,27 @@ Note - the following APIs take the language code as the the second argument base
 Alternatively use the **Service API**
 
 ```js
-this.shortNumber.formatNumber(19634, 'en');
+this.shortNumber.format(19634, 'en');
 // 19K
 ```
 
 ```js
-this.shortNumber.formatNumber(19634, 'ja');
+this.shortNumber.format(19634, 'ja');
 // 2万
 ```
 
 ```js
-this.shortNumber.formatNumber(19634, 'en', { significantDigits: 1, minimumFractionDigits: 1, maximumFractionDigits: 2 });
+this.shortNumber.format(19634, 'en', { significantDigits: 1, minimumFractionDigits: 1, maximumFractionDigits: 2 });
 // 19.6K
 ```
 
 ```js
-this.shortNumber.formatNumber(19634, 'es', { significantDigits: 1 });
+this.shortNumber.format(19634, 'es', { significantDigits: 1 });
 // 19,6K
 ```
 
 ```js
-this.shortNumber.formatNumber(101, 'en', { significantDigits: 1, useShorterFormat: true });
+this.shortNumber.format(101, 'en', { significantDigits: 1, useShorterFormat: true });
 // 0.1M
 ```
 
