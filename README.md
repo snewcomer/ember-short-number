@@ -1,7 +1,7 @@
 ember-short-number
 ==============================================================================
 
-Short number formatting based on cldr locale data
+Short number formatting based on cldr locale data.  Particularly useful for statistical data, showing financial numbers in charts, and abbreviating number of ratings.
 
 - `1234` is converted to `1K` in English
 - `101234` is converted to `101K` in English and `101.1K` if need 1 significant digit
@@ -9,6 +9,8 @@ Short number formatting based on cldr locale data
 - `101234` is converted to `101,1K` in Espanol if need 1 significant digit
 
 Based on [cldr-numbers-full](https://github.com/unicode-cldr/cldr-numbers-full)
+
+Here is the related proposal for [Compact Decimal Format](https://github.com/tc39/ecma402/issues/37).
 
 Currently this only shortens with latin digits 0..9
 
@@ -21,6 +23,7 @@ For your information, known number systems include:
  lepc, limb, mathbold, mathdbl, mathmono, mathsanb, mathsans, mlym,
  modi, mong, mroo, ...]
 
+Lastly, this work will be built into [ember-intl](https://github.com/ember-intl/ember-intl) in the near future and will use something like `shortNumber` notation style defined in ICU message syntax.
 
 Installation
 ------------------------------------------------------------------------------
@@ -65,27 +68,27 @@ Note - the following APIs take the language code as the the second argument base
 Alternatively use the **Service API**
 
 ```js
-this.shortNumber.formatNumber(19634, 'en');
+this.shortNumber.format(19634, 'en');
 // 19K
 ```
 
 ```js
-this.shortNumber.formatNumber(19634, 'ja');
+this.shortNumber.format(19634, 'ja');
 // 2万
 ```
 
 ```js
-this.shortNumber.formatNumber(19634, 'en', { significantDigits: 1, minimumFractionDigits: 1, maximumFractionDigits: 2 });
+this.shortNumber.format(19634, 'en', { significantDigits: 1, minimumFractionDigits: 1, maximumFractionDigits: 2 });
 // 19.6K
 ```
 
 ```js
-this.shortNumber.formatNumber(19634, 'es', { significantDigits: 1 });
+this.shortNumber.format(19634, 'es', { significantDigits: 1 });
 // 19,6K
 ```
 
 ```js
-this.shortNumber.formatNumber(101, 'en', { significantDigits: 1, useShorterFormat: true });
+this.shortNumber.format(101, 'en', { significantDigits: 1, useShorterFormat: true });
 // 0.1M
 ```
 

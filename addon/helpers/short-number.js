@@ -6,7 +6,7 @@ export default Helper.extend({
   shortNumber: inject(),
 
   compute([number, lang], digitsConfig) {
-    return get(this, 'shortNumber').formatNumber(number, lang, digitsConfig);
+    return get(this, 'shortNumber').format(number, lang, digitsConfig);
   }
 });
 
