@@ -89,7 +89,7 @@ this.shortNumber.format(101, 'en', { significantDigits: 1, financialFormat: true
 
 **Long Formatting**
 
-"Wait, I thought was for short formatting?" Well it can be a misnomer depending on the language.  Let's look at some examples.
+"Wait, I thought this addon was for compact number formatting?" Well it can be a misnomer depending on the language.  Let's look at some examples.
 
 This doesn't seem shorter!!!! (╯°□°）╯︵ ┻━┻
 ```js
