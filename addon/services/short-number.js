@@ -75,14 +75,18 @@ export default Service.extend({
       sign = -1;
     }
 
+    let { useShorterFormat = false, long = false } = digitsConfig;
+
     number = Math.abs(number);
-    let rules = this.__localeData__[locale] ? this.__localeData__[locale].numbers.decimal.short : null;
+    let rules = this.__localeData__[locale] && !long
+      ? this.__localeData__[locale].numbers.decimal.short
+      : long
+      ? this.__localeData__[locale].numbers.decimal.long
+      : null;
 
     if (!rules || number < 1000) {
       return value;
     }
-
-    let { useShorterFormat = false } = digitsConfig;
     let matchingRule;
     let arbitraryPrecision = 0;
 

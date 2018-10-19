@@ -336,4 +336,67 @@ module('Integration | Helper | short-number', function(hooks) {
 
   //   assert.equal(this.element.textContent.trim().replace(/\s+/, ' '), '-19 k');
   // });
+
+  module('Integration | Helper | short-number long format', function() {
+
+    test('it renders "en" <= 10,000', async function(assert) {
+      await render(hbs`{{short-number 234 "en" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '234');
+
+      await render(hbs`{{short-number 1234 "en" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '1 thousand');
+
+      await render(hbs`{{short-number 1234.23 "en" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '1 thousand');
+
+      await render(hbs`{{short-number 9499 "en" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '9 thousand', 'greater than 5% threshold so still use 1 thousand rules');
+
+      await render(hbs`{{short-number 9500 "en" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '10 thousand', 'within 5% threshold so use 10 thousand rules');
+
+      await render(hbs`{{short-number 99500 "en" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '100 thousand', 'within 5% threshold so use 100 thousand rules');
+
+      await render(hbs`{{short-number 999500 "en" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '1 million', 'within 5% threshold so use 1 million rules');
+
+      await render(hbs`{{short-number 9999500 "en" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '10 million', 'within 5% threshold so use 10 million rules');
+
+      await render(hbs`{{short-number 99999500 "en" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '100 million', 'within 5% threshold so use 100 million rules');
+    });
+
+    test('it renders "ja"', async function(assert) {
+      await render(hbs`{{short-number 234 "ja" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '234');
+
+      await render(hbs`{{short-number 1234 "ja" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '1');
+
+      await render(hbs`{{short-number 11634 "ja" significantDigits=1}}`);
+
+      assert.equal(this.element.textContent.trim(), '1.2万');
+
+      await render(hbs`{{short-number 19234 "ja" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '2万');
+
+      await render(hbs`{{short-number 11119234 "ja" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '1112万');
+    });
+  });
 });

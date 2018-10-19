@@ -86,6 +86,26 @@ this.shortNumber.format(101, 'en', { significantDigits: 1, useShorterFormat: tru
 
 * Note when using significantDigits, this addon utilizes [`toLocaleString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString).
 
+
+**Long Formatting**
+
+"Wait, I thought was for short formatting?" Well it can be a misnomer depending on the language.  Let's look at some examples.
+
+This doesn't seem shorter!!!! (╯°□°）╯︵ ┻━┻
+```js
+this.shortNumber.format(101000, 'en', { long: true });
+// 101 thousand
+```
+
+But this does! ʘ‿ʘ
+```js
+this.shortNumber.format(101000, 'ja', { long: true });
+// 101万
+```
+
+So we will just go with `ember-short-number` for now.
+
+
 Other
 ------------------------------------------------------------------------------
 Currently this only shortens with latin digits 0..9
