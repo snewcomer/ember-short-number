@@ -6,22 +6,10 @@ Short number formatting based on cldr locale data.  Particularly useful for stat
 - `1234` is converted to `1K` in English
 - `101234` is converted to `101K` in English and `101.1K` if need 1 significant digit
 - `1234` is converted to `1 mil` in Espanol
-- `101234` is converted to `101,1K` in Espanol if need 1 significant digit
+- `101234` is converted to `101,1 mil` in Espanol if need 1 significant digit
+- `1234` is converted to `1` in Japanese (yeah weird I know!)
 
-Based on [cldr-numbers-full](https://github.com/unicode-cldr/cldr-numbers-full)
-
-Here is the related proposal for [Compact Decimal Format](https://github.com/tc39/ecma402/issues/37).
-
-Currently this only shortens with latin digits 0..9
-
-For your information, known number systems include:
-
-[adlm, ahom, arab, arabext, armn, armnlow, bali, beng, bhks, brah,
- cakm, cham, cyrl, deva, ethi, fullwide, geor, grek, greklow, gujr,
- guru, hanidays, hanidec, hans, hansfin, hant, hantfin, hebr, hmng,
- java, jpan, jpanfin, kali, khmr, knda, lana, lanatham, laoo, latn,
- lepc, limb, mathbold, mathdbl, mathmono, mathsanb, mathsans, mlym,
- modi, mong, mroo, ...]
+Utilizes [cldr-numbers-full](https://github.com/unicode-cldr/cldr-numbers-full). Here is the related proposal for [Compact Decimal Format](https://github.com/tc39/ecma402/issues/37) that this addon is based on.  This is why there are no browser API's baked into something like `Intl.NumberFormat`.
 
 Lastly, this work will be built into [ember-intl](https://github.com/ember-intl/ember-intl) in the near future and will use something like `shortNumber` notation style defined in ICU message syntax.
 
@@ -88,7 +76,7 @@ this.shortNumber.format(19634, 'en', { significantDigits: 1, minimumFractionDigi
 
 ```js
 this.shortNumber.format(19634, 'es', { significantDigits: 1 });
-// 19,6K
+// 19,6 mil
 ```
 
 ```js
@@ -97,6 +85,20 @@ this.shortNumber.format(101, 'en', { significantDigits: 1, useShorterFormat: tru
 ```
 
 * Note when using significantDigits, this addon utilizes [`toLocaleString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString).
+
+Other
+------------------------------------------------------------------------------
+Currently this only shortens with latin digits 0..9
+
+For your information, known number systems include:
+
+[adlm, ahom, arab, arabext, armn, armnlow, bali, beng, bhks, brah,
+ cakm, cham, cyrl, deva, ethi, fullwide, geor, grek, greklow, gujr,
+ guru, hanidays, hanidec, hans, hansfin, hant, hantfin, hebr, hmng,
+ java, jpan, jpanfin, kali, khmr, knda, lana, lanatham, laoo, latn,
+ lepc, limb, mathbold, mathdbl, mathmono, mathsanb, mathsans, mlym,
+ modi, mong, mroo, ...]
+
 
 Contributing
 ------------------------------------------------------------------------------
