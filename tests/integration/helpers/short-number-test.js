@@ -68,7 +68,7 @@ module('Integration | Helper | short-number', function(hooks) {
 
     assert.equal(this.element.textContent.trim(), '101K');
 
-    await render(hbs`{{short-number 101000 "en" significantDigits=1 useShorterFormat=true}}`);
+    await render(hbs`{{short-number 101000 "en" significantDigits=1 financialFormat=true}}`);
 
     assert.equal(this.element.textContent.trim(), '0.1M', 'uses shorter format to display');
 
@@ -130,7 +130,7 @@ module('Integration | Helper | short-number', function(hooks) {
 
     assert.equal(this.element.textContent.trim(), '101K');
 
-    await render(hbs`{{short-number 101000 "en" significantDigits=1 useShorterFormat=true}}`);
+    await render(hbs`{{short-number 101000 "en" significantDigits=1 financialFormat=true}}`);
 
     assert.equal(this.element.textContent.trim(), '0.1M');
 
@@ -212,7 +212,7 @@ module('Integration | Helper | short-number', function(hooks) {
 
     assert.equal(replaceWhitespace(this.element.textContent.trim()), '101 mil');
 
-    await render(hbs`{{short-number 101000 "es" significantDigits=1 useShorterFormat=true}}`);
+    await render(hbs`{{short-number 101000 "es" significantDigits=1 financialFormat=true}}`);
 
     assert.equal(replaceWhitespace(this.element.textContent.trim()), '0,1 M');
 

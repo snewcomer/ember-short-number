@@ -54,7 +54,7 @@ Note - the following APIs take the language code as the the second argument base
 ```
 
 ```hbs
-{{short-number 101K "en" significantDigits=1 useShorterFormat=true}}
+{{short-number 101K "en" significantDigits=1 financialFormat=true}}
 ```
 
 Alternatively use the **Service API**
@@ -80,7 +80,7 @@ this.shortNumber.format(19634, 'es', { significantDigits: 1 });
 ```
 
 ```js
-this.shortNumber.format(101, 'en', { significantDigits: 1, useShorterFormat: true });
+this.shortNumber.format(101, 'en', { significantDigits: 1, financialFormat: true });
 // 0.1M
 ```
 
