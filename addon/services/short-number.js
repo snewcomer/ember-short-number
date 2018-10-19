@@ -75,14 +75,18 @@ export default Service.extend({
       sign = -1;
     }
 
+    let { financialFormat = false, long = false } = digitsConfig;
+
     number = Math.abs(number);
-    let rules = this.__localeData__[locale] ? this.__localeData__[locale].numbers.decimal.short : null;
+    let rules = this.__localeData__[locale] && !long
+      ? this.__localeData__[locale].numbers.decimal.short
+      : long
+      ? this.__localeData__[locale].numbers.decimal.long
+      : null;
 
     if (!rules || number < 1000) {
       return value;
     }
-
-    let { useShorterFormat = false } = digitsConfig;
     let matchingRule;
     let arbitraryPrecision = 0;
 
@@ -93,13 +97,13 @@ export default Service.extend({
 
         let [testRangeHigh] = rules[i];
         // always use previous rule until within 5% threshold of upper limit
-        if (!useShorterFormat && (1 - (number / testRangeHigh) > this.threshold)) {
+        if (!financialFormat && (1 - (number / testRangeHigh) > this.threshold)) {
           // e.g use 950K instead of 1M
           // e.g use 101K instead of 0.1M
           matchingRule = rules[i - 1];
         } else {
           matchingRule = rules[i];
-          if (!digitsConfig.significantDigits || !useShorterFormat) {
+          if (!digitsConfig.significantDigits || !financialFormat) {
             // if we want to round up, we need to prevent numbers like 99,499 from rounding down to 99K
             arbitraryPrecision = 1;
           }

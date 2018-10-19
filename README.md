@@ -54,7 +54,7 @@ Note - the following APIs take the language code as the the second argument base
 ```
 
 ```hbs
-{{short-number 101K "en" significantDigits=1 useShorterFormat=true}}
+{{short-number 101K "en" significantDigits=1 financialFormat=true}}
 ```
 
 Alternatively use the **Service API**
@@ -80,11 +80,31 @@ this.shortNumber.format(19634, 'es', { significantDigits: 1 });
 ```
 
 ```js
-this.shortNumber.format(101, 'en', { significantDigits: 1, useShorterFormat: true });
+this.shortNumber.format(101, 'en', { significantDigits: 1, financialFormat: true });
 // 0.1M
 ```
 
 * Note when using significantDigits, this addon utilizes [`toLocaleString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString).
+
+
+**Long Formatting**
+
+"Wait, I thought this addon was for compact number formatting?" Well it can be a misnomer depending on the language.  Let's look at some examples.
+
+This doesn't seem shorter!!!! (╯°□°）╯︵ ┻━┻
+```js
+this.shortNumber.format(101000, 'en', { long: true });
+// 101 thousand
+```
+
+But this does! ʘ‿ʘ
+```js
+this.shortNumber.format(101000, 'ja', { long: true });
+// 101万
+```
+
+So we will just go with `ember-short-number` for now.
+
 
 Other
 ------------------------------------------------------------------------------
