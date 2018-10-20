@@ -18,7 +18,11 @@ module('Integration | Helper | short-number', function(hooks) {
 
     await render(hbs`{{short-number 1234 "en"}}`);
 
-    assert.equal(this.element.textContent.trim(), '1K');
+    assert.equal(this.element.textContent.trim(), '1K', 'it formats 1,234');
+
+    await render(hbs`{{short-number "1234" "en"}}`);
+
+    assert.equal(this.element.textContent.trim(), '1K' , 'it accepts string as an argument');
 
     await render(hbs`{{short-number 1234.23 "en"}}`);
 
@@ -219,6 +223,10 @@ module('Integration | Helper | short-number', function(hooks) {
 
     assert.equal(replaceWhitespace(this.element.textContent.trim()), '19 mil');
 
+    await render(hbs`{{short-number 19234 "es-MX"}}`);
+
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '19 mil');
+
     await render(hbs`{{short-number 101000 "es"}}`);
 
     assert.equal(replaceWhitespace(this.element.textContent.trim()), '101 mil');
@@ -253,7 +261,7 @@ module('Integration | Helper | short-number', function(hooks) {
 
     await render(hbs`{{short-number "-19234" "es"}}`);
 
-    assert.equal(replaceWhitespace(this.element.textContent.trim()), '-19 mil');
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '-19 mil', 'renders negative number');
 
     await render(hbs`{{short-number "-19234.9" "es"}}`);
 

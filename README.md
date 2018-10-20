@@ -47,18 +47,22 @@ Note - the following APIs take the language code as the the second argument base
 
 ```hbs
 {{short-number 19634 "en"}}
+// 19K
 ```
 
 ```hbs
 {{short-number 19634 "en" significantDigits=1}}
+// 19.6K
 ```
 
 ```hbs
-{{short-number 19634 "en-GB" significantDigits=1}}
+{{short-number 19634 "es-MX" significantDigits=1}}
+// 19,6 mil
 ```
 
 ```hbs
 {{short-number 101K "en" significantDigits=1 financialFormat=true}}
+// 0.1M
 ```
 
 
