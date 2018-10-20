@@ -63,7 +63,7 @@ module('Integration | Helper | short-number', function(hooks) {
     assert.equal(this.element.textContent.trim(), '100K');
   });
 
-  test('it renders "en" <= 1,000,000', async function(assert) {
+  test('it renders "en" <= 100,000,000', async function(assert) {
     await render(hbs`{{short-number 101000 "en"}}`, 'it does not round up to 1M');
 
     assert.equal(this.element.textContent.trim(), '101K');
@@ -103,6 +103,17 @@ module('Integration | Helper | short-number', function(hooks) {
     await render(hbs`{{short-number "-19234.9" "en"}}`);
 
     assert.equal(this.element.textContent.trim(), '-19K');
+  });
+
+  test('it renders "en" >= 100,000,000', async function(assert) {
+    await render(hbs`{{short-number 100000000 "en"}}`, 'it does not round up to 1M');
+
+    assert.equal(this.element.textContent.trim(), '100M');
+
+    // Might be something wrong with Glimmer
+    // await render(hbs`{{short-number 1000000000 "en"}}`, 'it does not round up to 1M');
+
+    // assert.equal(this.element.textContent.trim(), '100M');
   });
 
   test('it renders "en" with significantDigits', async function(assert) {
