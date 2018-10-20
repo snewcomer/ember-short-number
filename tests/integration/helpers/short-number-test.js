@@ -18,7 +18,11 @@ module('Integration | Helper | short-number', function(hooks) {
 
     await render(hbs`{{short-number 1234 "en"}}`);
 
-    assert.equal(this.element.textContent.trim(), '1K');
+    assert.equal(this.element.textContent.trim(), '1K', 'it formats 1,234');
+
+    await render(hbs`{{short-number "1234" "en"}}`);
+
+    assert.equal(this.element.textContent.trim(), '1K' , 'it accepts string as an argument');
 
     await render(hbs`{{short-number 1234.23 "en"}}`);
 
@@ -63,7 +67,7 @@ module('Integration | Helper | short-number', function(hooks) {
     assert.equal(this.element.textContent.trim(), '100K');
   });
 
-  test('it renders "en" <= 1,000,000', async function(assert) {
+  test('it renders "en" <= 100,000,000', async function(assert) {
     await render(hbs`{{short-number 101000 "en"}}`, 'it does not round up to 1M');
 
     assert.equal(this.element.textContent.trim(), '101K');
@@ -103,6 +107,17 @@ module('Integration | Helper | short-number', function(hooks) {
     await render(hbs`{{short-number "-19234.9" "en"}}`);
 
     assert.equal(this.element.textContent.trim(), '-19K');
+  });
+
+  test('it renders "en" >= 100,000,000', async function(assert) {
+    await render(hbs`{{short-number 100000000 "en"}}`, 'it does not round up to 1M');
+
+    assert.equal(this.element.textContent.trim(), '100M');
+
+    // Might be something wrong with Glimmer
+    // await render(hbs`{{short-number 1000000000 "en"}}`, 'it does not round up to 1M');
+
+    // assert.equal(this.element.textContent.trim(), '100M');
   });
 
   test('it renders "en" with significantDigits', async function(assert) {
@@ -208,6 +223,10 @@ module('Integration | Helper | short-number', function(hooks) {
 
     assert.equal(replaceWhitespace(this.element.textContent.trim()), '19 mil');
 
+    await render(hbs`{{short-number 19234 "es-MX"}}`);
+
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '19 mil');
+
     await render(hbs`{{short-number 101000 "es"}}`);
 
     assert.equal(replaceWhitespace(this.element.textContent.trim()), '101 mil');
@@ -242,7 +261,7 @@ module('Integration | Helper | short-number', function(hooks) {
 
     await render(hbs`{{short-number "-19234" "es"}}`);
 
-    assert.equal(replaceWhitespace(this.element.textContent.trim()), '-19 mil');
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '-19 mil', 'renders negative number');
 
     await render(hbs`{{short-number "-19234.9" "es"}}`);
 

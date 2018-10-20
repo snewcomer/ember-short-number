@@ -28,6 +28,18 @@ module('Unit | Service | short-number', function(hooks) {
     assert.equal(formattedNumber, '1K');
   });
 
+  test('it does format 1B', function(assert) {
+    let service = this.owner.lookup('service:short-number');
+    let formattedNumber = service.format(1000000000, 'en');
+    assert.equal(formattedNumber, '1B');
+  });
+
+  test('it does format 1B in ja', function(assert) {
+    let service = this.owner.lookup('service:short-number');
+    let formattedNumber = service.format(1000000000, 'ja');
+    assert.equal(formattedNumber, '10億');
+  });
+
   test('it defaults locale to en', function(assert) {
     let service = this.owner.lookup('service:short-number');
     let formattedNumber = service.format(1234);
@@ -43,6 +55,15 @@ module('Unit | Service | short-number', function(hooks) {
   test('it accepts a string', function(assert) {
     let service = this.owner.lookup('service:short-number');
     let formattedNumber = service.format('1234', 'en');
+    assert.equal(formattedNumber, '1K');
+  });
+
+  test('it accepts a language-Region format', function(assert) {
+    let service = this.owner.lookup('service:short-number');
+    let formattedNumber = service.format('1234', 'en-GB');
+    assert.equal(formattedNumber, '1K');
+
+    formattedNumber = service.format('1234', 'en_GB');
     assert.equal(formattedNumber, '1K');
   });
 });

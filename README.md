@@ -1,7 +1,7 @@
 ember-short-number
 ==============================================================================
 
-Short number formatting based on cldr locale data.  Particularly useful for statistical data, showing financial numbers in charts, and abbreviating number of ratings.
+Short number formatting based on CLDR locale data.  Particularly useful for __statistical data__, showing financial numbers in __charts__, and __abbreviating number of ratings__ across a range of languages.
 
 - `1234` is converted to `1K` in English
 - `101234` is converted to `101K` in English and `101.1K` if need 1 significant digit
@@ -47,15 +47,24 @@ Note - the following APIs take the language code as the the second argument base
 
 ```hbs
 {{short-number 19634 "en"}}
+// 19K
 ```
 
 ```hbs
 {{short-number 19634 "en" significantDigits=1}}
+// 19.6K
+```
+
+```hbs
+{{short-number 19634 "es-MX" significantDigits=1}}
+// 19,6 mil
 ```
 
 ```hbs
 {{short-number 101K "en" significantDigits=1 financialFormat=true}}
+// 0.1M
 ```
+
 
 Alternatively use the **Service API**
 
@@ -65,23 +74,23 @@ this.shortNumber.format(19634, 'en');
 ```
 
 ```js
-this.shortNumber.format(19634, 'ja');
-// 2万
-```
-
-```js
 this.shortNumber.format(19634, 'en', { significantDigits: 1, minimumFractionDigits: 1, maximumFractionDigits: 2 });
 // 19.6K
 ```
 
 ```js
-this.shortNumber.format(19634, 'es', { significantDigits: 1 });
-// 19,6 mil
+this.shortNumber.format(101, 'en', { significantDigits: 1, financialFormat: true });
+// 0.1M
 ```
 
 ```js
-this.shortNumber.format(101, 'en', { significantDigits: 1, financialFormat: true });
-// 0.1M
+this.shortNumber.format(19634, 'ja');
+// 2万
+```
+
+```js
+this.shortNumber.format(19634, 'es', { significantDigits: 1 });
+// 19,6 mil
 ```
 
 * Note when using significantDigits, this addon utilizes [`toLocaleString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString).
