@@ -3,7 +3,7 @@ import { getOwner } from '@ember/application';
 import { set } from '@ember/object';
 import hydrate from '../-private/hydrate';
 import { isLessThanBoundary, extractIntPart, normalizeNumber } from '../-private/math-utils';
-import { replaceNumber, normalizeLocal } from '../-private/utils';
+import { replaceNumber, normalizeLocal, needsFormatting } from '../-private/utils';
 
 export default Service.extend({
   __localeData__: null,
@@ -121,6 +121,10 @@ export default Service.extend({
     let [range, opts] = matchingRule;
     // cldr data is either `one` or `other`.  Defaulting to `one` for now
     let [format, numberOfDigits] = opts.one || opts.other;
+
+    if (!needsFormatting(format)) {
+      return value;
+    }
 
     let normalized = normalizeNumber(
       extractIntPart(number, range, numberOfDigits),

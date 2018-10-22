@@ -7,7 +7,7 @@ Short number formatting based on CLDR locale data.  Particularly useful for __st
 - `101234` is converted to `101K` in English and `101.1K` if need 1 significant digit
 - `1234` is converted to `1 mil` in Espanol
 - `101234` is converted to `101,1 mil` in Espanol if need 1 significant digit
-- `1234` is converted to `1` in Japanese (yeah weird I know!)
+- `1234` is converted to `1234` in Japanese
 
 Utilizes [cldr-numbers-full](https://github.com/unicode-cldr/cldr-numbers-full). Here is the related proposal for [Compact Decimal Format](https://github.com/tc39/ecma402/issues/37) that this addon is based on.  This is why there are no browser API's baked into something like `Intl.NumberFormat`.
 
@@ -35,15 +35,15 @@ let ENV = {
 }
 ```
 
-**threshold**
+### threshold
 
 This configuration option decides when to round up the formatted number.  So if you pass 95001, `ember-short-number` will output 100K.  However, if you pass 94999, you will get back 95K.
 
 Usage
 ------------------------------------------------------------------------------
-Note - the following APIs take the language code as the the second argument based on [ISO 639-1](http://www.loc.gov/standards/iso639-2/php/code_list.php)
+The following APIs take the language code as the the second argument based on [ISO 639-1](http://www.loc.gov/standards/iso639-2/php/code_list.php).  You can also pass `en_GB` or `en-GB` and we will normalize it to `en` as well.
 
-**Template Helper**
+### Template Helper
 
 ```hbs
 {{short-number 19634 "en"}}
@@ -66,7 +66,7 @@ Note - the following APIs take the language code as the the second argument base
 ```
 
 
-Alternatively use the **Service API**
+### Service API
 
 ```js
 this.shortNumber.format(19634, 'en');
@@ -96,7 +96,7 @@ this.shortNumber.format(19634, 'es', { significantDigits: 1 });
 * Note when using significantDigits, this addon utilizes [`toLocaleString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString).
 
 
-**Long Formatting**
+### Long Formatting
 
 "Wait, I thought this addon was for compact number formatting?" Well it can be a misnomer depending on the language.  Let's look at some examples.
 

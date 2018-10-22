@@ -1,7 +1,7 @@
 /**
  * @method replaceNumber
  * @param {Number} number
- * @param {String} String
+ * @param {String} format
  * @return {String}
  */
 export function replaceNumber(number, format) {
@@ -24,3 +24,14 @@ export function normalizeLocal(locale) {
   return locale;
 }
 
+/**
+ * If rule only contains 0, it indicates no short number formatting applied
+ * e.g. "ja" 1234 -> 1234 and not 1K
+ *
+ * @method needsFormatting
+ * @param {String} format
+ * @return {String}
+ */
+export function needsFormatting(format) {
+  return format.match(/[^0]/);
+}

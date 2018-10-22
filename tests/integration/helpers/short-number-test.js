@@ -319,7 +319,7 @@ module('Integration | Helper | short-number', function(hooks) {
 
     await render(hbs`{{short-number 1234 "ja"}}`);
 
-    assert.equal(this.element.textContent.trim(), '1');
+    assert.equal(this.element.textContent.trim(), '1234');
 
     await render(hbs`{{short-number 11634 "ja" significantDigits=1}}`);
 
@@ -328,6 +328,32 @@ module('Integration | Helper | short-number', function(hooks) {
     await render(hbs`{{short-number 19234 "ja"}}`);
 
     assert.equal(this.element.textContent.trim(), '2万');
+
+    await render(hbs`{{short-number 23234 "ja" significantDigits=1}}`);
+
+    assert.equal(this.element.textContent.trim(), '2.3万');
+
+    await render(hbs`{{short-number 94999 "ja"}}`);
+
+    assert.equal(this.element.textContent.trim(), '9万');
+
+    await render(hbs`{{short-number 95001 "ja"}}`);
+
+    assert.equal(this.element.textContent.trim(), '10万', '100000 in japanese');
+
+    await render(hbs`{{short-number 101000 "ja"}}`);
+
+    assert.equal(this.element.textContent.trim(), '10万', '101000 in japanese');
+
+    await render(hbs`{{short-number 1000000 "ja"}}`);
+
+    assert.equal(this.element.textContent.trim(), '100万', '1 million in japanese');
+
+    await render(hbs`{{short-number 10000000 "ja"}}`);
+
+    assert.equal(this.element.textContent.trim(), '1000万', '10 million in japanese');
+
+    await render(hbs`{{short-number 99000000 "ja"}}`);
 
     await render(hbs`{{short-number 11119234 "ja"}}`);
 
@@ -403,9 +429,9 @@ module('Integration | Helper | short-number', function(hooks) {
 
       await render(hbs`{{short-number 1234 "ja" long=true}}`);
 
-      assert.equal(this.element.textContent.trim(), '1');
+      assert.equal(this.element.textContent.trim(), '1234');
 
-      await render(hbs`{{short-number 11634 "ja" significantDigits=1}}`);
+      await render(hbs`{{short-number 11634 "ja" significantDigits=1 long=true}}`);
 
       assert.equal(this.element.textContent.trim(), '1.2万');
 
@@ -413,9 +439,45 @@ module('Integration | Helper | short-number', function(hooks) {
 
       assert.equal(this.element.textContent.trim(), '2万');
 
+      await render(hbs`{{short-number 23234 "ja" significantDigits=1 long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '2.3万');
+
+      await render(hbs`{{short-number 94999 "ja" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '9万');
+
+      await render(hbs`{{short-number 95001 "ja" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '10万', '95000 in japanese');
+
+      await render(hbs`{{short-number 95001 "ja" long=true significantDigits=1}}`);
+
+      assert.equal(this.element.textContent.trim(), '9.5万', '95000 in japanese');
+
+      await render(hbs`{{short-number 101000 "ja" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '10万', '101000 in japanese');
+
+      await render(hbs`{{short-number 1000000 "ja" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '100万', '1 million in japanese');
+
+      await render(hbs`{{short-number 10000000 "ja" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '1000万', '10 million in japanese');
+
+      await render(hbs`{{short-number 99000000 "ja" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '1億', '100 million in japanese');
+
       await render(hbs`{{short-number 11119234 "ja" long=true}}`);
 
-      assert.equal(this.element.textContent.trim(), '1112万');
+      assert.equal(this.element.textContent.trim(), '1112万', '11 million in japanese long format');
+
+      await render(hbs`{{short-number -11119234 "ja" long=true}}`);
+
+      assert.equal(this.element.textContent.trim(), '-1112万', 'negative 11 million in japanese long format');
     });
   });
 });
