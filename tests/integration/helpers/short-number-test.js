@@ -449,7 +449,11 @@ module('Integration | Helper | short-number', function(hooks) {
 
       await render(hbs`{{short-number 95001 "ja" long=true}}`);
 
-      assert.equal(this.element.textContent.trim(), '10万', '100000 in japanese');
+      assert.equal(this.element.textContent.trim(), '10万', '95000 in japanese');
+
+      await render(hbs`{{short-number 95001 "ja" long=true significantDigits=1}}`);
+
+      assert.equal(this.element.textContent.trim(), '9.5万', '95000 in japanese');
 
       await render(hbs`{{short-number 101000 "ja" long=true}}`);
 
