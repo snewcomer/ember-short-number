@@ -17,11 +17,7 @@ export function replaceNumber(number, format) {
  * @return {String}
  */
 export function normalizeLocal(locale) {
-  let match = locale.match(/_|-/);
-  if (match) {
-    return locale.split(match[0])[0];
-  }
-  return locale;
+  return locale.replace(/_/, '-').toLowerCase();
 }
 
 /**
@@ -34,4 +30,26 @@ export function normalizeLocal(locale) {
  */
 export function needsFormatting(format) {
   return format.match(/[^0]/);
+}
+
+/**
+ * @method findLocaleDate
+ * @param {Object} localeData
+ * @param {String} locale
+ * @return {String}
+ */
+export function findLocaleDate(localeData, locale) {
+  let topLevelData = localeData[locale];
+  if (!topLevelData) {
+    return;
+  }
+
+  let numbersHash = topLevelData.numbers;
+  let parentLocale = topLevelData.parentLocale;
+
+  if (!numbersHash && parentLocale) {
+    numbersHash = findLocaleDate(localeData, parentLocale);
+  }
+
+  return numbersHash;
 }
