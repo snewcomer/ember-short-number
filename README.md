@@ -7,7 +7,7 @@ Short number formatting based on CLDR locale data.  Particularly useful for __st
 - `101234` is converted to `101K` in English and `101.1K` if need 1 significant digit
 - `1234` is converted to `1 mil` in Espanol
 - `101234` is converted to `101,1 mil` in Espanol if need 1 significant digit
-- `1234` is converted to `1234` in Japanese (yeah weird I know!)
+- `1234` is converted to `1234` in Japanese
 
 Utilizes [cldr-numbers-full](https://github.com/unicode-cldr/cldr-numbers-full). Here is the related proposal for [Compact Decimal Format](https://github.com/tc39/ecma402/issues/37) that this addon is based on.  This is why there are no browser API's baked into something like `Intl.NumberFormat`.
 
