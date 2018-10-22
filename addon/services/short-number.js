@@ -3,7 +3,7 @@ import { getOwner } from '@ember/application';
 import { set } from '@ember/object';
 import hydrate from '../-private/hydrate';
 import { isLessThanBoundary, extractIntPart, normalizeNumber } from '../-private/math-utils';
-import { replaceNumber, normalizeLocal, needsFormatting, findParentLocale } from '../-private/utils';
+import { replaceNumber, normalizeLocal, needsFormatting, findLocaleDate } from '../-private/utils';
 
 export default Service.extend({
   __localeData__: null,
@@ -70,32 +70,31 @@ export default Service.extend({
       return value;
     }
 
-    // figure out which locale obj with number format
+    // figure out which numbers hash based on the locale
     locale = normalizeLocal(locale); // en_GB -> en-GB
-    let localeData = findParentLocale(this.__localeData__, locale);
+    let localeData = findLocaleDate(this.__localeData__, locale);
     if (!localeData) {
       return value;
     }
 
-    // take the absolute value
+    // take the absolute value and stash sign to apply at end
     let sign = 1;
     if (number < 0) {
       sign = -1;
       number = Math.abs(number);
     }
 
+    // find specific rules: short or long
     let { financialFormat = false, long = false } = digitsConfig;
-
     let rules = long ? localeData.decimal.long : localeData.decimal.short;
     if (!rules || number < 1000) {
       return value;
     }
 
+    // 1. Take number and determine range it is in
+    // 2. Extract specific rule from hash - ["0K", 1] meaning which value from the rule and number of zeros
     let matchingRule;
     let arbitraryPrecision = 0;
-
-    // 1. Take value and determine range it is in
-    // 2. Extract specific rule from hash - ["0K", 1] meaning which value from the rule and number of zeros
     for (let i = 0; i <= rules.length; i++) {
       if (isLessThanBoundary(number, rules[i][0])) {
 

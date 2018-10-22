@@ -33,12 +33,12 @@ export function needsFormatting(format) {
 }
 
 /**
- * @method findParentLocale
+ * @method findLocaleDate
  * @param {Object} localeData
  * @param {String} locale
  * @return {String}
  */
-export function findParentLocale(localeData, locale) {
+export function findLocaleDate(localeData, locale) {
   let topLevelData = localeData[locale];
   if (!topLevelData) {
     return;
@@ -48,7 +48,7 @@ export function findParentLocale(localeData, locale) {
   let parentLocale = topLevelData.parentLocale;
 
   if (!numbersHash && parentLocale) {
-    numbersHash = findParentLocale(localeData, parentLocale);
+    numbersHash = findLocaleDate(localeData, parentLocale);
   }
 
   return numbersHash;
