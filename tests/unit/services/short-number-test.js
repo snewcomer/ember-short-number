@@ -65,5 +65,8 @@ module('Unit | Service | short-number', function(hooks) {
 
     formattedNumber = service.format('1234', 'en_GB');
     assert.equal(formattedNumber, '1K');
+
+    formattedNumber = service.format('1234', 'en_xx');
+    assert.equal(formattedNumber, '1234', 'it doesnt format if lang not found');
   });
 });
