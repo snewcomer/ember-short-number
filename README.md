@@ -41,7 +41,7 @@ This configuration option decides when to round up the formatted number.  So if 
 
 Usage
 ------------------------------------------------------------------------------
-The following APIs take the language code as the the second argument based on [ISO 639-1](http://www.loc.gov/standards/iso639-2/php/code_list.php).  You can also pass `en_GB` or `en-GB` and we will normalize it to `en` as well.
+The following APIs take the language code as the the second argument based on [ISO 639-1](http://www.loc.gov/standards/iso639-2/php/code_list.php).  You can also pass `en_GB` and we will normalize it to `en-GB` as well.
 
 ### Template Helper
 

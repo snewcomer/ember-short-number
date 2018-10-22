@@ -223,10 +223,6 @@ module('Integration | Helper | short-number', function(hooks) {
 
     assert.equal(replaceWhitespace(this.element.textContent.trim()), '19 mil');
 
-    await render(hbs`{{short-number 19234 "es-MX"}}`);
-
-    assert.equal(replaceWhitespace(this.element.textContent.trim()), '19 mil');
-
     await render(hbs`{{short-number 101000 "es"}}`);
 
     assert.equal(replaceWhitespace(this.element.textContent.trim()), '101 mil');
@@ -266,6 +262,68 @@ module('Integration | Helper | short-number', function(hooks) {
     await render(hbs`{{short-number "-19234.9" "es"}}`);
 
     assert.equal(replaceWhitespace(this.element.textContent.trim()), '-19 mil');
+  });
+
+  test('it renders "es-MX"', async function(assert) {
+    await render(hbs`{{short-number 234 "es-MX"}}`);
+
+    assert.equal(this.element.textContent.trim(), '234');
+
+    await render(hbs`{{short-number 1234 "es-MX"}}`);
+
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '1 k');
+
+    await render(hbs`{{short-number 1234.23 "es-MX"}}`);
+
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '1 k');
+
+    await render(hbs`{{short-number 19234 "es-MX"}}`);
+
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '19 k');
+
+    await render(hbs`{{short-number 19234 "es-MX"}}`);
+
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '19 k');
+
+    await render(hbs`{{short-number 101000 "es-MX"}}`);
+
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '101 k');
+
+    await render(hbs`{{short-number 101000 "es-MX" significantDigits=1 financialFormat=true}}`);
+
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '0.1 M');
+
+    await render(hbs`{{short-number 949949 "es-MX" significantDigits=1}}`);
+
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '949.9 k', 'greater than 5% threshold and does not round up');
+
+    await render(hbs`{{short-number 949949 "es-MX" significantDigits=2}}`);
+
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '949.95 k', 'greater than 5% threshold and does not round up');
+
+    await render(hbs`{{short-number 949999 "es-MX" significantDigits=1}}`);
+
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '950 k', 'greater than 5% threshold so still use 100K rules');
+
+    await render(hbs`{{short-number 995000 "es-MX" significantDigits=1}}`);
+
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '1 M', 'within 5% threshold so no significant digits');
+
+    await render(hbs`{{short-number 999949 "es-MX" significantDigits=1}}`);
+
+    assert.equal(this.element.textContent.trim().replace(/\s+/, ' '), '1 M');
+
+    await render(hbs`{{short-number 11119234 "es-MX"}}`);
+
+    assert.equal(this.element.textContent.trim().replace(/\s+/, ' '), '11 M');
+
+    await render(hbs`{{short-number "-19234" "es-MX"}}`);
+
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '-19 k', 'renders negative number');
+
+    await render(hbs`{{short-number "-19234.9" "es-MX"}}`);
+
+    assert.equal(replaceWhitespace(this.element.textContent.trim()), '-19 k');
   });
 
   test('it renders "ks"', async function(assert) {

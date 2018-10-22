@@ -3,7 +3,7 @@ import { getOwner } from '@ember/application';
 import { set } from '@ember/object';
 import hydrate from '../-private/hydrate';
 import { isLessThanBoundary, extractIntPart, normalizeNumber } from '../-private/math-utils';
-import { replaceNumber, normalizeLocal, needsFormatting } from '../-private/utils';
+import { replaceNumber, normalizeLocal, needsFormatting, findParentLocale } from '../-private/utils';
 
 export default Service.extend({
   __localeData__: null,
@@ -66,29 +66,31 @@ export default Service.extend({
   format(value, locale = 'en', digitsConfig = {}) {
     // coerce to number
     let number = Number(value);
-    locale = normalizeLocal(locale);
-
     if (!value || typeof number !== 'number') {
       return value;
     }
 
+    // figure out which locale obj with number format
+    locale = normalizeLocal(locale); // en_GB -> en-GB
+    let localeData = findParentLocale(this.__localeData__, locale);
+    if (!localeData) {
+      return value;
+    }
+
+    // take the absolute value
     let sign = 1;
     if (number < 0) {
       sign = -1;
+      number = Math.abs(number);
     }
 
     let { financialFormat = false, long = false } = digitsConfig;
 
-    number = Math.abs(number);
-    let rules = this.__localeData__[locale] && !long
-      ? this.__localeData__[locale].numbers.decimal.short
-      : long
-      ? this.__localeData__[locale].numbers.decimal.long
-      : null;
-
+    let rules = long ? localeData.decimal.long : localeData.decimal.short;
     if (!rules || number < 1000) {
       return value;
     }
+
     let matchingRule;
     let arbitraryPrecision = 0;
 
