@@ -56,8 +56,13 @@ The following APIs take the language code as the the second argument based on [I
 ```
 
 ```hbs
-{{short-number 19634 "es-MX" significantDigits=1}}
+{{short-number 19634 "es" significantDigits=1}}
 // 19,6 mil
+```
+
+```hbs
+{{short-number 19634 "es-MX" significantDigits=1}}
+// 19.6 k
 ```
 
 ```hbs

@@ -5,7 +5,7 @@ import hbs from 'htmlbars-inline-precompile';
 
 // due to regex replacement
 function replaceWhitespace(val) {
-  return val.replace(/\s+/, ' ')
+  return val.replace(/\s+/, ' ');
 }
 
 module('Integration | Helper | short-number', function(hooks) {
