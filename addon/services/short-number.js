@@ -108,6 +108,7 @@ export default Service.extend({
           matchingRule = rules[i];
           if (!digitsConfig.significantDigits || !financialFormat) {
             // if we want to round up, we need to prevent numbers like 99,499 from rounding down to 99K
+            // /-private/math-utils will use this variable to round a number like 91 to 100 since we are within the threshold
             arbitraryPrecision = 1;
           }
         }

@@ -52,21 +52,21 @@ export function normalizeNumber(
   return withRounding(decimal, arbitraryPrecision) * sign;
 }
 
-export function toFixed(decimal, significantDigits) {
+function toFixed(decimal, significantDigits) {
   // solves issues with toFixed returning a string
   // e.g. 999.94 -> 999.9
   // e.g. 999.95 -> 1000 instead of (999.95).toFixed(1) -> '1000.1'
   return Math.round(decimal * Math.pow(10, significantDigits)) / Math.pow(10, significantDigits);
 }
 
-export function withRounding(decimal, arbitraryPrecision) {
+function withRounding(decimal, arbitraryPrecision) {
   // rounding on floating point numbers
   // e.g. 99.5 -> 100
   if (decimal > 1) {
     return Math.round(decimal / Math.pow(10, arbitraryPrecision)) * Math.pow(10, arbitraryPrecision);
   }
 
-  // We do not want to round when < 1
+  // We do not want to round up to nearest 10 (Math.pow(10, 1)) when < 1.  Just round decimal
   return Math.round(decimal);
 }
 
