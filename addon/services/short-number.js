@@ -1,9 +1,9 @@
-import Service from '@ember/service';
 import { getOwner } from '@ember/application';
 import { set } from '@ember/object';
+import Service from '@ember/service';
 import hydrate from '../-private/hydrate';
-import { isLessThanBoundary, extractIntPart, normalizeNumber } from '../-private/math-utils';
-import { replaceNumber, normalizeLocal, needsFormatting, findLocaleDate } from '../-private/utils';
+import { extractIntPart, isLessThanBoundary, normalizeNumber } from '../-private/math-utils';
+import { findLocaleData, needsFormatting, normalizeLocal, replaceNumber } from '../-private/utils';
 
 export default Service.extend({
   __localeData__: null,
@@ -72,7 +72,7 @@ export default Service.extend({
 
     // figure out which numbers hash based on the locale
     locale = normalizeLocal(locale); // en_GB -> en-GB
-    let localeData = findLocaleDate(this.__localeData__, locale);
+    let localeData = findLocaleData(this.__localeData__, locale);
     if (!localeData) {
       return value;
     }
@@ -130,8 +130,6 @@ export default Service.extend({
 
     let normalized = normalizeNumber(
       extractIntPart(number, range, numberOfDigits),
-      range,
-      numberOfDigits,
       arbitraryPrecision,
       sign,
       locale,

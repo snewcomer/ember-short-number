@@ -7,10 +7,7 @@ import toLocaleFixed from './to-locale-fixed';
  * @return {Boolean}
  */
 export function isLessThanBoundary(number, boundary) {
-  if (number <= boundary) {
-    return true;
-  }
-  return false;
+  return number <= boundary;
 }
 
 /**
@@ -22,7 +19,7 @@ export function extractIntPart(number, range, numberOfDigits) {
   // 17345 -> 17.345
   // 999949 -> 999.9K with one significant digit or 999,9 mil in Spanish
   // this gives us the "int" (LHS) part of the number with the remains on the RHS
-  return number / (range / Math.pow(10, numberOfDigits - 1));
+  return (number / range) * Math.pow(10, numberOfDigits - 1);
 }
 
 /**
@@ -37,8 +34,6 @@ export function extractIntPart(number, range, numberOfDigits) {
  */
 export function normalizeNumber(
   decimal,
-  range,
-  numberOfDigits,
   arbitraryPrecision,
   sign,
   locale,
@@ -56,17 +51,20 @@ function toFixed(decimal, significantDigits) {
   // solves issues with toFixed returning a string
   // e.g. 999.94 -> 999.9
   // e.g. 999.95 -> 1000 instead of (999.95).toFixed(1) -> '1000.1'
-  return Math.round(decimal * Math.pow(10, significantDigits)) / Math.pow(10, significantDigits);
+  let powOf10 = Math.pow(10, significantDigits);
+  return Math.round(decimal * powOf10) / powOf10;
 }
 
 function withRounding(decimal, arbitraryPrecision) {
-  // rounding on floating point numbers
-  // e.g. 99.5 -> 100
-  if (decimal > 1) {
-    return Math.round(decimal / Math.pow(10, arbitraryPrecision)) * Math.pow(10, arbitraryPrecision);
+  if (decimal <= 1) {
+    // We do not want to round up to nearest 10 (Math.pow(10, 1)) when < 1.
+    // Just round decimal
+    return Math.round(decimal);
   }
 
-  // We do not want to round up to nearest 10 (Math.pow(10, 1)) when < 1.  Just round decimal
-  return Math.round(decimal);
+  // rounding on floating point numbers
+  // e.g. 99.5 -> 100
+  let powOf10 = Math.pow(10, arbitraryPrecision);
+  return Math.round(decimal / powOf10) * powOf10;
 }
 
