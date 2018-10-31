@@ -1,5 +1,11 @@
 ember-short-number
 ==============================================================================
+![Download count all time](https://img.shields.io/npm/dt/ember-short-number.svg)
+[![npm version](https://badge.fury.io/js/ember-short-number.svg)](http://badge.fury.io/js/ember-short-number)
+[![Ember Observer Score](http://emberobserver.com/badges/ember-short-number.svg)](http://emberobserver.com/addons/ember-short-number)
+
+[![Dependency Status](https://david-dm.org/snewcomer/ember-short-number.svg)](https://david-dm.org/snewcomer/ember-short-number)
+[![devDependency Status](https://david-dm.org/snewcomer/ember-short-number/dev-status.svg)](https://david-dm.org/snewcomer/ember-short-number#info=devDependencies)
 
 Short number formatting based on CLDR locale data.  Particularly useful for __statistical data__, showing financial numbers in __charts__, and __abbreviating number of ratings__ across a range of languages.
 
