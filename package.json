@@ -23,7 +23,9 @@
     "test:all": "ember try:each"
   },
   "dependencies": {
-    "broccoli-cldr-data": "ember-intl/broccoli-cldr-data",
+    "broccoli-cldr-data": "git+ssh://git@github.com:snewcomer/broccoli-cldr-data#sn/master-formatjs",
+    "cldr-compact-number": "snewcomer/cldr-compact-number",
+    "ember-auto-import": "^1.2.15",
     "ember-cli-babel": "^6.16.0"
   },
   "devDependencies": {
