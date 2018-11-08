@@ -1,6 +1,6 @@
 'use strict';
 
-const extract = require('broccoli-cldr-data');
+const extract = require('@ember-intl/broccoli-cldr-data');
 const mergeTrees = require('broccoli-merge-trees');
 const path = require('path');
 const fs = require('fs');
