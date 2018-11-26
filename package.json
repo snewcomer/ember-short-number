@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@ember-intl/broccoli-cldr-data": "~3.1.0",
-    "cldr-compact-number": "0.0.5",
+    "cldr-compact-number": "0.0.4",
     "ember-auto-import": "^1.2.15",
     "ember-cli-babel": "^6.16.0"
   },
