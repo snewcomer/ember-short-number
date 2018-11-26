@@ -3,9 +3,7 @@ import { set } from '@ember/object';
 import { assign } from '@ember/polyfills';
 import Service from '@ember/service';
 import hydrate from '../-private/hydrate';
-import cldrCompactNumber from 'cldr-compact-number';
-
-const { compactFormat } = cldrCompactNumber;
+import CompactNumber from 'cldr-compact-number';
 
 export default Service.extend({
   __localeData__: null,
@@ -67,7 +65,7 @@ export default Service.extend({
    */
   format(value, locale = 'en', digitsConfig = {}) {
     const options = assign({}, { threshold: this.threshold }, digitsConfig);
-    return compactFormat(value, locale, this.__localeData__, options)
+    return CompactNumber(value, locale, this.__localeData__, options)
   }
 });
 
