@@ -17,7 +17,7 @@ Short number formatting based on CLDR locale data.  Particularly useful for __st
 
 Utilizes [cldr-numbers-full](https://github.com/unicode-cldr/cldr-numbers-full). Here is the related proposal for [Compact Decimal Format](https://github.com/tc39/ecma402/issues/37) that this addon is based on.  This is why there are no browser API's baked into something like `Intl.NumberFormat`.
 
-Lastly, this work will be built into [ember-intl](https://github.com/ember-intl/ember-intl) in the near future and will use something like `shortNumber` notation style defined in ICU message syntax.
+Lastly, this work has been built into [ember-intl](https://github.com/ember-intl/ember-intl) as of version 4.0.0-beta.6 if you also use an internationalization library. See docs for more details.
 
 Installation
 ------------------------------------------------------------------------------
