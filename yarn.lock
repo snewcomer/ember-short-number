@@ -2046,10 +2046,10 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-cldr-compact-number@~0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/cldr-compact-number/-/cldr-compact-number-0.2.2.tgz#57008baa2f2ddb45348e2becb3aa053d8a344494"
-  integrity sha512-ZFoI6bUhft5uDe7QOvo1howSXixVsrLx/8nvSiXfGSbKnH1OGlXOU1HZNu9pXPYY5Zbu/tPTylpRTwZ6I7QnoQ==
+cldr-compact-number@~0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/cldr-compact-number/-/cldr-compact-number-0.3.0.tgz#3174c6cf897e689841b709346e511d2838d6737c"
+  integrity sha512-qssdBfbp9MVaiegi+wSza2LdVr94mtAilR0KVuso1bVztYzSgjJqPeGzh+qZO/LeJEauJrSJT+Jl8Zjpq/sVUA==
 
 cldr-core@^34.0.0:
   version "34.0.0"
