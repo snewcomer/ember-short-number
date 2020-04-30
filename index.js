@@ -1,6 +1,7 @@
 'use strict';
 
 const extract = require('@ember-intl/broccoli-cldr-data');
+/* eslint-disable node/no-unpublished-require */
 const mergeTrees = require('broccoli-merge-trees');
 const path = require('path');
 const fs = require('fs');
