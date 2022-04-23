@@ -1,6 +1,5 @@
 import { getOwner } from '@ember/application';
 import { set } from '@ember/object';
-import { assign } from '@ember/polyfills';
 import Service from '@ember/service';
 import hydrate from '../-private/hydrate';
 import CompactNumber from 'cldr-compact-number';
@@ -64,7 +63,7 @@ export default Service.extend({
    * @return {String}
    */
   format(value, locale = 'en', digitsConfig = {}) {
-    const options = assign({}, { threshold: this.threshold }, digitsConfig);
+    const options = Object.assign({}, { threshold: this.threshold }, digitsConfig);
     return CompactNumber(value, locale, this.__localeData__, options)
   }
 });
