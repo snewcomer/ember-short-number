@@ -4,9 +4,9 @@ import Service from '@ember/service';
 import hydrate from '../-private/hydrate';
 import CompactNumber from 'cldr-compact-number';
 
-export default Service.extend({
-  __localeData__: null,
-  __config__: null,
+export default class ShortNumberService extends Service {
+  __localeData__ = null;
+  __config__ = null;
 
   /**
    * Percentage from upper limit to consider using upper limit rules
@@ -16,10 +16,10 @@ export default Service.extend({
    * @property threshold
    * @default 0.05
    */
-  threshold: 0.05,
+  threshold = 0.05;
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
 
     let userConfig = getOwner(this).resolveRegistration('config:environment');
     let addonConfig = userConfig['ember-short-number'];
@@ -33,7 +33,7 @@ export default Service.extend({
 
     this.__localeData__ = {};
     hydrate(this, getOwner(this));
-  },
+  }
 
   /**
    * @method addLocaleData
@@ -41,7 +41,7 @@ export default Service.extend({
    */
   addLocaleData(data) {
     this.__localeData__[data.locale.toLowerCase()] = data;
-  },
+  }
 
   /**
    * digitsConfig accepts 3 possiblearguments
@@ -66,5 +66,5 @@ export default Service.extend({
     const options = Object.assign({}, { threshold: this.threshold }, digitsConfig);
     return CompactNumber(value, locale, this.__localeData__, options)
   }
-});
+}
 
