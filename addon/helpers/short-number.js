@@ -1,12 +1,12 @@
 import Helper from '@ember/component/helper';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import { get } from '@ember/object';
 
-export default Helper.extend({
-  shortNumber: inject(),
+export default class ShortNumberHelper extends Helper {
+  @service shortNumber;
 
   compute([number, lang], digitsConfig) {
-    return get(this, 'shortNumber').format(number, lang, digitsConfig);
+    return this.shortNumber.format(number, lang, digitsConfig);
   }
-});
+}
 
